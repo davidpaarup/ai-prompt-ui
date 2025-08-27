@@ -15,6 +15,7 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [userName, setUserName] = useState('')
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -36,6 +37,17 @@ export default function Home() {
     }
     
     checkAuthStatus()
+  }, [])
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const signIn = async () => {
@@ -152,13 +164,13 @@ export default function Home() {
             }
           }}
           disabled={isLoading}
-          style={{ width: '50%' }}
+          style={{ width: isMobile ? '90%' : '50%' }}
         />
         <Button variant="outline" onClick={sendToAPI} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
           {isLoading ? 'Loading...' : 'Send'}
         </Button>
         {apiResponse && (
-          <div style={{ marginTop: '20px', padding: '10px', width: '50%', maxWidth: '50%' }}>
+          <div style={{ marginTop: '20px', padding: '10px', width: isMobile ? '90%' : '50%', maxWidth: isMobile ? '90%' : '50%' }}>
             <ReactMarkdown>{apiResponse}</ReactMarkdown>
           </div>
         )}
