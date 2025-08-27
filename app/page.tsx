@@ -14,6 +14,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
+  const [userName, setUserName] = useState('')
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -21,8 +22,10 @@ export default function Home() {
         const session = await authClient.getSession()
         if (session.data) {
           setIsAuthenticated(true)
+          setUserName(session.data.user.name || session.data.user.email || 'User')
         } else {
           setIsAuthenticated(false)
+          setUserName('')
         }
       } catch (error) {
         console.error('Error checking auth status:', error)
@@ -55,6 +58,7 @@ export default function Home() {
     try {
       await authClient.signOut()
       setIsAuthenticated(false)
+      setUserName('')
       setApiResponse('')
       setTextareaValue('')
     } catch (error) {
@@ -124,28 +128,41 @@ export default function Home() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
-      <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
-        <Button variant="outline" onClick={signOut} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-          {isLoading ? 'Signing Out...' : 'Sign Out'}
-        </Button>
+    <div>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+        <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <span>{userName}</span>
+          <Button variant="outline" onClick={signOut} style={{ cursor: 'pointer' }}>
+            {'Sign Out'}
+          </Button>
+        </div>
       </div>
 
-      <Textarea 
-        value={textareaValue} 
-        onChange={(e) => setTextareaValue(e.target.value)} 
-        disabled={isLoading}
-        style={{ width: '50%' }}
-      />
-      <Button variant="outline" onClick={sendToAPI} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-        {isLoading ? 'Loading...' : 'Send'}
-      </Button>
-      {apiResponse && (
-        <div style={{ marginTop: '20px', padding: '10px' }}>
-          <ReactMarkdown>{apiResponse}</ReactMarkdown>
-        </div>
-      )}
-
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
+        <Textarea 
+          value={textareaValue} 
+          onChange={(e) => setTextareaValue(e.target.value)} 
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+              e.preventDefault()
+              if (!isLoading) {
+                sendToAPI()
+              }
+            }
+          }}
+          disabled={isLoading}
+          style={{ width: '50%' }}
+        />
+        <Button variant="outline" onClick={sendToAPI} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+          {isLoading ? 'Loading...' : 'Send'}
+        </Button>
+        {apiResponse && (
+          <div style={{ marginTop: '20px', padding: '10px', width: '50%', maxWidth: '50%' }}>
+            <ReactMarkdown>{apiResponse}</ReactMarkdown>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
