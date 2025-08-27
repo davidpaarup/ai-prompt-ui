@@ -69,7 +69,7 @@ export default function Home() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${result.data.accessToken}`
+          'Authorization': `Bearer ${result.data?.accessToken}`
         },
         body: JSON.stringify({ prompt: textareaValue })
       })
