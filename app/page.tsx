@@ -36,6 +36,7 @@ export default function Home() {
   }, [])
 
   const signIn = async () => {
+    setIsLoading(true)
     try {
 
       await authClient.signIn.social({
@@ -45,6 +46,21 @@ export default function Home() {
 
     } catch (error) {
       console.error('Error signing in:', error)
+      setIsLoading(false)
+    }
+  }
+
+  const signOut = async () => {
+    setIsLoading(true)
+    try {
+      await authClient.signOut()
+      setIsAuthenticated(false)
+      setApiResponse('')
+      setTextareaValue('')
+    } catch (error) {
+      console.error('Error signing out:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -100,9 +116,8 @@ export default function Home() {
   if (!isAuthenticated) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '40px' }}>
-        <h1>Please sign in to continue</h1>
-        <Button onClick={signIn}>
-          Sign in with Microsoft
+        <Button onClick={signIn} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+          {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
         </Button>
       </div>
     )
@@ -110,6 +125,11 @@ export default function Home() {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
+      <div style={{ position: 'absolute', top: '20px', right: '20px' }}>
+        <Button variant="outline" onClick={signOut} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+          {isLoading ? 'Signing Out...' : 'Sign Out'}
+        </Button>
+      </div>
 
       <Textarea 
         value={textareaValue} 
