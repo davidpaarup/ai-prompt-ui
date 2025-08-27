@@ -131,10 +131,15 @@ export default function Home() {
 
   if (!isAuthenticated) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '40px' }}>
-        <Button onClick={signIn} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-          {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
-        </Button>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+          <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '40px' }}>
+          <Button onClick={signIn} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+            {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
+          </Button>
+        </div>
       </div>
     )
   }
