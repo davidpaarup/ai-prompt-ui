@@ -121,7 +121,7 @@ export default function Home() {
         {isLoading ? 'Loading...' : 'Send'}
       </Button>
       {apiResponse && (
-        <div style={{ marginTop: '20px', padding: '10px', border: '1px solid #ccc', borderRadius: '4px' }}>
+        <div style={{ marginTop: '20px', padding: '10px' }}>
           <ReactMarkdown>{apiResponse}</ReactMarkdown>
         </div>
       )}
