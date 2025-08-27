@@ -37,44 +37,39 @@ export default function Home() {
 
   const signIn = async () => {
     try {
+
       await authClient.signIn.social({
         provider: "microsoft",
         callbackURL: "/",
       })
+
     } catch (error) {
       console.error('Error signing in:', error)
     }
   }
 
-  const getCookieValue = (cookieName: string): string | null => {
-    const cookies = document.cookie.split(';')
-    for (let cookie of cookies) {
-      const [name, value] = cookie.trim().split('=')
-      if (name === cookieName) {
-        return decodeURIComponent(value)
-      }
-    }
-    return null
-  }
-
   const sendToAPI = async () => {
-    const token = getCookieValue('token')
-    if (!token) {
-      console.error('No token found in cookies')
-      return
-    }
-
     setIsLoading(true)
     try {
+      const session = await authClient.getSession()
 
-      //const url = 'http://localhost:5227/prompt';
+      if (!session.data?.session.token) {
+        console.error('No access token found in session')
+        setIsAuthenticated(false)
+        return
+      }
+
       const url = 'https://app-250827175950.azurewebsites.net/prompt'
+
+      const result = await authClient.getAccessToken({
+        providerId: "microsoft", // or any other provider id
+      })
 
       const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${result.data.accessToken}`
         },
         body: JSON.stringify({ prompt: textareaValue })
       })
