@@ -6,8 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
-    "install": "npx @better-auth/cli generate -y && npx @better-auth/cli migrate -y"
+    "lint": "eslint"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",

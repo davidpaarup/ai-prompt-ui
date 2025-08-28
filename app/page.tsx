@@ -82,6 +82,7 @@ export default function Home() {
 
   const sendToAPI = async () => {
     setIsLoading(true)
+    setApiResponse('')
     try {
       const session = await authClient.getSession()
 
@@ -91,10 +92,10 @@ export default function Home() {
         return
       }
 
-      const url = 'https://app-250827175950.azurewebsites.net/prompt'
+      const url = 'http://localhost:5227/prompt'
 
       const result = await authClient.getAccessToken({
-        providerId: "microsoft", // or any other provider id
+        providerId: "microsoft",
       })
 
       const response = await fetch(url, {
@@ -103,16 +104,33 @@ export default function Home() {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${result.data?.accessToken}`
         },
-        body: JSON.stringify({ prompt: textareaValue })
+        body: JSON.stringify({ message: textareaValue })
       })
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      const responseData = await response.text()
-      const cleanedResponse = responseData.replace(/\\n/g, '\n').replace(/^"|"$/g, '')
-      setApiResponse(cleanedResponse)
+      const reader = response.body?.getReader();
+
+      if (!reader) {
+        return;
+      }
+
+      const decoder = new TextDecoder();
+      let accumulatedResponse = '';
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        
+        const chunk = decoder.decode(value, { stream: true });
+        const cleanedChunk = chunk.replace(/\\n/g, '\n').replace(/^"|"$/g, '');
+        
+        accumulatedResponse += cleanedChunk;
+        setApiResponse(accumulatedResponse);
+      }
+      
     } catch (error) {
       console.error('Error sending to API:', error)
     } finally {
