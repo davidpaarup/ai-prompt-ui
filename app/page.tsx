@@ -97,7 +97,7 @@ export default function Home() {
         providerId: "microsoft",
       })
 
-      const wsUrl = 'wss://app-250827175950.azurewebsites.net/ws/prompt'
+      const wsUrl = 'ws://app-250827175950.azurewebsites.net/ws/prompt'
       const ws = new WebSocket(wsUrl)
 
       ws.onopen = () => {
