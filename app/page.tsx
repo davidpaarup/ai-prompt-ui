@@ -97,49 +97,61 @@ export default function Home() {
         providerId: "microsoft",
       })
 
-      const wsUrl = 'wss://app-250827175950.azurewebsites.net/ws/prompt'
-      const ws = new WebSocket(wsUrl)
+      const response = await fetch('/api/websocket', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${result.data?.accessToken}`
+        },
+        body: JSON.stringify({ prompt: textareaValue })
+      })
 
-      ws.onopen = () => {
-        const message = {
-          prompt: textareaValue,
-          authorization: `Bearer ${result.data?.accessToken}`
-        }
-        ws.send(JSON.stringify(message))
+      if (!response.ok) {
+        throw new Error('Failed to connect to API')
       }
 
-      ws.onmessage = (event) => {
-        const data = event.data
-        if (data === '[DONE]') {
-          ws.close()
-          setIsLoading(false)
-          return
-        }
+      const reader = response.body?.getReader()
+      if (!reader) {
+        throw new Error('No response body')
+      }
+
+      const decoder = new TextDecoder()
+      let buffer = ''
+
+      while (true) {
+        const { done, value } = await reader.read()
         
-        try {
-          const parsed = JSON.parse(data)
-          if (parsed.content) {
-            setApiResponse(prev => prev + parsed.content)
-          } else if (parsed.error) {
-            console.error('WebSocket error:', parsed.error)
-            setIsLoading(false)
+        if (done) break
+
+        buffer += decoder.decode(value, { stream: true })
+        const lines = buffer.split('\n')
+        buffer = lines.pop() || ''
+
+        for (const line of lines) {
+          if (line.startsWith('data: ')) {
+            try {
+              const data = JSON.parse(line.slice(6))
+              if (data.content) {
+                setApiResponse(prev => prev + data.content)
+              } else if (data.error) {
+                console.error('API error:', data.error)
+                setIsLoading(false)
+                return
+              } else if (data.done) {
+                setIsLoading(false)
+                return
+              }
+            } catch (parseError) {
+              console.error('Error parsing SSE data:', parseError)
+            }
           }
-        } catch {
-          setApiResponse(prev => prev + data)
         }
       }
 
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error)
-        setIsLoading(false)
-      }
-
-      ws.onclose = () => {
-        setIsLoading(false)
-      }
+      setIsLoading(false)
 
     } catch (error) {
-      console.error('Error connecting to WebSocket:', error)
+      console.error('Error connecting to API:', error)
       setIsLoading(false)
     }
   }
