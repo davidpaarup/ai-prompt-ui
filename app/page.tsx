@@ -92,7 +92,7 @@ export default function Home() {
         return
       }
 
-      const url = 'http://localhost:5227/prompt'
+      const url = 'https://app-250827175950.azurewebsites.net/prompt'
 
       const result = await authClient.getAccessToken({
         providerId: "microsoft",
