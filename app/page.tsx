@@ -82,8 +82,6 @@ export default function Home() {
 
   const sendToAPI = async () => {
     setIsLoading(true)
-    setApiResponse('')
-    
     try {
       const session = await authClient.getSession()
 
@@ -93,53 +91,31 @@ export default function Home() {
         return
       }
 
+      const url = 'https://app-250827175950.azurewebsites.net/prompt'
+
       const result = await authClient.getAccessToken({
-        providerId: "microsoft",
+        providerId: "microsoft", // or any other provider id
       })
 
-      const wsUrl = 'ws://app-250827175950.azurewebsites.net/ws/prompt'
-      const ws = new WebSocket(wsUrl)
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${result.data?.accessToken}`
+        },
+        body: JSON.stringify({ prompt: textareaValue })
+      })
 
-      ws.onopen = () => {
-        const message = {
-          prompt: textareaValue,
-          authorization: `Bearer ${result.data?.accessToken}`
-        }
-        ws.send(JSON.stringify(message))
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      ws.onmessage = (event) => {
-        const data = event.data
-        if (data === '[DONE]') {
-          ws.close()
-          setIsLoading(false)
-          return
-        }
-        
-        try {
-          const parsed = JSON.parse(data)
-          if (parsed.content) {
-            setApiResponse(prev => prev + parsed.content)
-          } else if (parsed.error) {
-            console.error('WebSocket error:', parsed.error)
-            setIsLoading(false)
-          }
-        } catch {
-          setApiResponse(prev => prev + data)
-        }
-      }
-
-      ws.onerror = (error) => {
-        console.error('WebSocket error:', error)
-        setIsLoading(false)
-      }
-
-      ws.onclose = () => {
-        setIsLoading(false)
-      }
-
+      const responseData = await response.text()
+      const cleanedResponse = responseData.replace(/\\n/g, '\n').replace(/^"|"$/g, '')
+      setApiResponse(cleanedResponse)
     } catch (error) {
-      console.error('Error connecting to WebSocket:', error)
+      console.error('Error sending to API:', error)
+    } finally {
       setIsLoading(false)
     }
   }
