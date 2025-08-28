@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
             ws.send(prompt)
           })
 
-          ws.on('message', (data: any) => {
+          ws.on('message', (data) => {
             const message = data.toString()
             if (message === '[DONE]') {
               controller.enqueue(`data: ${JSON.stringify({ done: true })}\n\n`)
@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
             }
           })
 
-          ws.on('error', (error: any) => {
+          ws.on('error', (error: Error) => {
             console.error('WebSocket error:', error)
             controller.enqueue(`data: ${JSON.stringify({ error: 'WebSocket connection error' })}\n\n`)
             controller.close()
