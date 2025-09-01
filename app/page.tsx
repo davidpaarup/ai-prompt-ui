@@ -92,7 +92,7 @@ export default function Home() {
         return
       }
 
-      const url = 'https://app-250827175950.azurewebsites.net/prompt'
+      const url = 'https://semantic-kernel-api.thankfuldune-972aed1a.eastus.azurecontainerapps.io/prompt'
 
       const result = await authClient.getAccessToken({
         providerId: "microsoft",
