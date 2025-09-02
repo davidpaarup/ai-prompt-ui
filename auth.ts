@@ -22,11 +22,11 @@ const dialect = new MssqlDialect({
         type: 'default',
       },
       options: {
-        database: 'ia-prompt',
+        database: 'ai-prompt',
         port: 1433,
         trustServerCertificate: true,
       },
-      server: 'ia-prompt.database.windows.net',
+      server: 'ai-prompt.database.windows.net',
     }),
   },
 })
