@@ -92,13 +92,14 @@ export default function Home() {
         return
       }
 
-      const url = 'https://semantic-kernel-api.redflower-cd74514c.norwayeast.azurecontainerapps.io/prompt'
+      const url = process.env.BACKEND_URL as string
+      const endpoint = `${url}/prompt`
 
       const result = await authClient.getAccessToken({
         providerId: "microsoft",
       })
 
-      const response = await fetch(url, {
+      const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
