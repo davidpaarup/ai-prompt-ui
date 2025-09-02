@@ -92,7 +92,7 @@ export default function Home() {
         return
       }
 
-      const url = process.env.BACKEND_URL as string
+      const url = process.env.NEXT_PUBLIC_BACKEND_URL as string
       const endpoint = `${url}/prompt`
 
       const result = await authClient.getAccessToken({
