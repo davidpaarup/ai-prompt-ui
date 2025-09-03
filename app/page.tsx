@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { createAuthClient } from "better-auth/react"
+import { ConfigCatProvider, useFeatureFlag } from "configcat-react";
 
 export default function Home() {
   const authClient = createAuthClient()
@@ -178,41 +179,58 @@ export default function Home() {
   }
 
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
-        <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          <span>{userName}</span>
-          <Button variant="outline" onClick={signOut} style={{ cursor: 'pointer' }}>
-            {'Sign Out'}
+    <ConfigCatProvider sdkKey="configcat-sdk-1/meTdCGortE2NLUX2scAMxw/DNveDqRj8UCMaoeaF5YkGA">
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+          <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <span>{userName}</span>
+            <Button variant="outline" onClick={signOut} style={{ cursor: 'pointer' }}>
+              {'Sign Out'}
+            </Button>
+          </div>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
+          <Textarea 
+            value={textareaValue} 
+            onChange={(e) => setTextareaValue(e.target.value)} 
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault()
+                if (!isLoading) {
+                  sendToAPI()
+                }
+              }
+            }}
+            disabled={isLoading}
+            style={{ width: isMobile ? '90%' : '50%' }}
+          />
+          <Button variant="outline" onClick={sendToAPI} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
+            {isLoading ? 'Loading...' : 'Send'}
           </Button>
+          {apiResponse && (
+            <div style={{ marginTop: '20px', padding: '10px', width: isMobile ? '90%' : '50%', maxWidth: isMobile ? '90%' : '50%' }}>
+              <ReactMarkdown>{apiResponse}</ReactMarkdown>
+            </div>
+          )}
+          
+          <FeaturesComponent isMobile={isMobile}/>
+
         </div>
       </div>
+    </ConfigCatProvider>
+  );
+}
 
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
-        <Textarea 
-          value={textareaValue} 
-          onChange={(e) => setTextareaValue(e.target.value)} 
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' && !e.shiftKey) {
-              e.preventDefault()
-              if (!isLoading) {
-                sendToAPI()
-              }
-            }
-          }}
-          disabled={isLoading}
-          style={{ width: isMobile ? '90%' : '50%' }}
-        />
-        <Button variant="outline" onClick={sendToAPI} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-          {isLoading ? 'Loading...' : 'Send'}
-        </Button>
-        {apiResponse && (
-          <div style={{ marginTop: '20px', padding: '10px', width: isMobile ? '90%' : '50%', maxWidth: isMobile ? '90%' : '50%' }}>
-            <ReactMarkdown>{apiResponse}</ReactMarkdown>
-          </div>
-        )}
-      </div>
+function FeaturesComponent({ isMobile }: { isMobile: boolean }) {
+  const { value: isTextToAudioEnabledValue, loading: isTextToAudioEnabledLoading  } = useFeatureFlag("isTextToAudioEnabled", false);
+  
+  return (
+    <div style={{ marginTop: '20px', padding: '10px', width: isMobile ? '90%' : '50%', maxWidth: isMobile ? '90%' : '50%', borderTop: '1px solid #e0e0e0' }}>
+      <p style={{ margin: 0 }}>
+        <strong>Text to audio:</strong> {isTextToAudioEnabledLoading ? 'Loading...' : isTextToAudioEnabledValue ? 'enabled' : 'disabled'}
+      </p>
     </div>
   );
 }
