@@ -1,0 +1,9 @@
+create table "user" ("id" varchar(36) not null primary key, "name" varchar(255) not null, "email" varchar(255) not null unique, "emailVerified" smallint not null, "image" varchar(8000), "createdAt" datetime default CURRENT_TIMESTAMP not null, "updatedAt" datetime default CURRENT_TIMESTAMP not null);
+
+create table "session" ("id" varchar(36) not null primary key, "expiresAt" datetime not null, "token" varchar(255) not null unique, "createdAt" datetime default CURRENT_TIMESTAMP not null, "updatedAt" datetime not null, "ipAddress" varchar(8000), "userAgent" varchar(8000), "userId" varchar(36) not null references "user" ("id") on delete cascade);
+
+create table "account" ("id" varchar(36) not null primary key, "accountId" varchar(8000) not null, "providerId" varchar(8000) not null, "userId" varchar(36) not null references "user" ("id") on delete cascade, "accessToken" varchar(8000), "refreshToken" varchar(8000), "idToken" varchar(8000), "accessTokenExpiresAt" datetime, "refreshTokenExpiresAt" datetime, "scope" varchar(8000), "password" varchar(8000), "createdAt" datetime default CURRENT_TIMESTAMP not null, "updatedAt" datetime not null);
+
+create table "verification" ("id" varchar(36) not null primary key, "identifier" varchar(8000) not null, "value" varchar(8000) not null, "expiresAt" datetime not null, "createdAt" datetime default CURRENT_TIMESTAMP not null, "updatedAt" datetime default CURRENT_TIMESTAMP not null);
+
+create table "jwks" ("id" varchar(36) not null primary key, "publicKey" varchar(8000) not null, "privateKey" varchar(8000) not null, "createdAt" datetime not null);

@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { MssqlDialect } from "kysely";
 import * as Tedious from 'tedious'
 import * as Tarn from 'tarn'
+import { jwt } from "better-auth/plugins"
  
 const dialect = new MssqlDialect({
   tarn: {
@@ -32,6 +33,13 @@ const dialect = new MssqlDialect({
 })
 
 export const auth = betterAuth({
+    plugins: [jwt({
+      jwks: {
+        keyPairConfig: {
+          alg: 'ES256',
+        }
+      }
+    })],
     database: {
         dialect,
         type: "mssql"
@@ -41,5 +49,5 @@ export const auth = betterAuth({
             clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID as string,
             clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET as string
         }
-    }, 
+    },
 })

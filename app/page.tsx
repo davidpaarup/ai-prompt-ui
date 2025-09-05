@@ -95,15 +95,14 @@ export default function Home() {
       const url = process.env.NEXT_PUBLIC_BACKEND_URL as string
       const endpoint = `${url}/prompt`
 
-      const result = await authClient.getAccessToken({
-        providerId: "microsoft",
-      })
+      const tokenResult = await fetch("/api/auth/token");
+      const { token } = await tokenResult.json();
 
       const response = await fetch(endpoint, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${result.data?.accessToken}`
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ message: textareaValue })
       })
