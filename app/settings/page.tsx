@@ -118,21 +118,31 @@ export default function SettingsPage() {
 
   if (isCheckingAuth) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <div style={{
-          width: '32px',
-          height: '32px',
-          border: '3px solid #f3f3f3',
-          borderTop: '3px solid #3498db',
-          borderRadius: '50%',
-          animation: 'spin 1s linear infinite'
-        }}>
-          <style>{`
-            @keyframes spin {
-              0% { transform: rotate(0deg); }
-              100% { transform: rotate(360deg); }
-            }
-          `}</style>
+      <div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <Button variant="outline" onClick={() => router.back()} style={{ cursor: 'pointer', padding: '8px' }}>
+              <ArrowLeft size={16} />
+            </Button>
+            <h1 style={{ margin: 0, fontSize: '24px' }}>Settings</h1>
+          </div>
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            border: '3px solid #f3f3f3',
+            borderTop: '3px solid #3498db',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }}>
+            <style>{`
+              @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+              }
+            `}</style>
+          </div>
         </div>
       </div>
     )

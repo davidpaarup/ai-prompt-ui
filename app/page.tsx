@@ -2,6 +2,7 @@
 
 import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
+import { Tooltip } from "@/components/ui/tooltip"
 import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { createAuthClient } from "better-auth/react"
@@ -19,6 +20,8 @@ export default function Home() {
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [userName, setUserName] = useState('')
   const [isMobile, setIsMobile] = useState(false)
+  const [hasApiToken, setHasApiToken] = useState(false)
+  const [isCheckingToken, setIsCheckingToken] = useState(true)
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -27,6 +30,7 @@ export default function Home() {
         if (session.data) {
           setIsAuthenticated(true)
           setUserName(session.data.user.name || session.data.user.email || 'User')
+          await checkApiTokenStatus()
         } else {
           setIsAuthenticated(false)
           setUserName('')
@@ -52,6 +56,31 @@ export default function Home() {
     
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
+
+  const checkApiTokenStatus = async () => {
+    setIsCheckingToken(true)
+    try {
+      const tokenResult = await fetch("/api/auth/token");
+      const { token } = await tokenResult.json();
+
+      const response = await fetch('/api/user', {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setHasApiToken(data.hasToken)
+      }
+    } catch (error) {
+      console.error('Error checking API token status:', error)
+      setHasApiToken(false)
+    } finally {
+      setIsCheckingToken(false)
+    }
+  }
 
   const signIn = async () => {
     setIsLoading(true)
@@ -197,7 +226,8 @@ export default function Home() {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
           <Textarea 
             value={textareaValue} 
-            onChange={(e) => setTextareaValue(e.target.value)} 
+            onChange={(e) => setTextareaValue(e.target.value)}
+            placeholder="Enter your prompt here..." 
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault()
@@ -209,9 +239,21 @@ export default function Home() {
             disabled={isLoading}
             style={{ width: isMobile ? '90%' : '50%' }}
           />
-          <Button variant="outline" onClick={sendToAPI} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-            {isLoading ? 'Loading...' : 'Send'}
-          </Button>
+          <Tooltip 
+            content="Please add your OpenAI API key in settings to send a prompt." 
+            disabled={hasApiToken || isCheckingToken}
+          >
+            <Button 
+              variant="outline" 
+              onClick={sendToAPI} 
+              disabled={isLoading || !hasApiToken || isCheckingToken} 
+              style={{ 
+                cursor: (isLoading || !hasApiToken || isCheckingToken) ? 'not-allowed' : 'pointer' 
+              }}
+            >
+              {isLoading ? 'Loading...' : 'Send'}
+            </Button>
+          </Tooltip>
           {apiResponse && (
             <div style={{ marginTop: '20px', padding: '10px', width: isMobile ? '90%' : '50%', maxWidth: isMobile ? '90%' : '50%' }}>
               <ReactMarkdown>{apiResponse}</ReactMarkdown>
