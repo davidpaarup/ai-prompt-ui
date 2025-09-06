@@ -168,7 +168,7 @@ export default function SettingsPage() {
       <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
           <Settings size={24} />
-          <h2 style={{ margin: 0, fontSize: '20px' }}>Account Settings</h2>
+          <h2 style={{ margin: 0, fontSize: '20px' }}>Settings</h2>
         </div>
         
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
@@ -182,13 +182,13 @@ export default function SettingsPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               {hasStoredToken && (
                 <div style={{ padding: '12px', backgroundColor: '#f8f9fa', border: '1px solid #e9ecef', borderRadius: '4px' }}>
-                  <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#6c757d' }}>Current token:</p>
+                  <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#6c757d' }}>Current:</p>
                   <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '14px' }}>{maskedToken}</p>
                 </div>
               )}
               <Input
                 type="password"
-                placeholder={hasStoredToken ? "Enter new OpenAI API token" : "Enter your OpenAI API token"}
+                placeholder={hasStoredToken ? "Enter new token" : "Enter your token"}
                 value={apiToken}
                 onChange={(e) => setApiToken(e.target.value)}
                 disabled={isSaving}
@@ -204,7 +204,6 @@ export default function SettingsPage() {
           </div>
 
           <div style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-            <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>Account <a href="http://" target="_blank" rel="noopener noreferrer"></a>actions</h3>
             <Button 
               variant="outline" 
               onClick={signOut} 
