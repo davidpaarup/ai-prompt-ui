@@ -5,9 +5,12 @@ import { Button } from "@/components/ui/button"
 import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { createAuthClient } from "better-auth/react"
+import { Settings } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 export default function Home() {
   const authClient = createAuthClient()
+  const router = useRouter()
 
   const [textareaValue, setTextareaValue] = useState('')
   const [apiResponse, setApiResponse] = useState('')
@@ -182,6 +185,9 @@ export default function Home() {
           <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <span>{userName}</span>
+            <Button variant="outline" onClick={() => router.push('/settings')} style={{ cursor: 'pointer', padding: '8px' }}>
+              <Settings size={16} />
+            </Button>
             <Button variant="outline" onClick={signOut} style={{ cursor: 'pointer' }}>
               {'Sign Out'}
             </Button>
