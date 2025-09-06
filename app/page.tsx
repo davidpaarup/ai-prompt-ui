@@ -215,7 +215,7 @@ export default function Home() {
 
   return (
       <div>
-        <div style={{ position: 'fixed !important', top: '0 !important', left: '0 !important', width: '100% !important', zIndex: '1000 !important', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
+        <div style={{ position: 'fixed', top: '0 !important', left: '0 !important', width: '100% !important', zIndex: '1000 !important', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
           <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             {!isMobile && <span>{userName}</span>}
