@@ -6,16 +6,16 @@ import { Tooltip } from "@/components/ui/tooltip"
 import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { createAuthClient } from "better-auth/react"
-import { Settings } from "lucide-react"
-import { useRouter } from "next/navigation"
+import TopBar from "@/components/TopBar"
 
 export default function Home() {
   const authClient = createAuthClient()
-  const router = useRouter()
 
   const [textareaValue, setTextareaValue] = useState('')
   const [apiResponse, setApiResponse] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false)
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [userName, setUserName] = useState('')
@@ -82,8 +82,8 @@ export default function Home() {
     }
   }
 
-  const signIn = async () => {
-    setIsLoading(true)
+  const signInWithMicrosoft = async () => {
+    setIsMicrosoftLoading(true)
     try {
 
       await authClient.signIn.social({
@@ -93,7 +93,22 @@ export default function Home() {
 
     } catch (error) {
       console.error('Error signing in:', error)
-      setIsLoading(false)
+      setIsMicrosoftLoading(false)
+    }
+  }
+
+  const signInWithGoogle = async () => {
+    setIsGoogleLoading(true)
+    try {
+
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/",
+      })
+
+    } catch (error) {
+      console.error('Error signing in:', error)
+      setIsGoogleLoading(false)
     }
   }
 
@@ -174,9 +189,7 @@ export default function Home() {
   if (isCheckingAuth) {
     return (
       <div>
-        <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '1000', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
-          <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
-        </div>
+        <TopBar />
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', paddingTop: '80px' }}>
           <div style={{
             width: '32px',
@@ -201,12 +214,13 @@ export default function Home() {
   if (!isAuthenticated) {
     return (
       <div>
-        <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '1000', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
-          <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '120px' }}>
-          <Button onClick={signIn} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
-            {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
+        <TopBar />
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', marginTop: '120px' }}>
+          <Button onClick={signInWithMicrosoft} disabled={isMicrosoftLoading || isGoogleLoading} variant="outline" style={{ cursor: (isMicrosoftLoading || isGoogleLoading) ? 'not-allowed' : 'pointer', minWidth: '200px' }}>
+            {isMicrosoftLoading ? 'Signing in...' : 'Sign in with Microsoft'}
+          </Button>
+          <Button onClick={signInWithGoogle} disabled={isMicrosoftLoading || isGoogleLoading} variant="outline" style={{ cursor: (isMicrosoftLoading || isGoogleLoading) ? 'not-allowed' : 'pointer', minWidth: '200px' }}>
+            {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
           </Button>
         </div>
       </div>
@@ -215,18 +229,12 @@ export default function Home() {
 
   return (
       <div>
-        <div style={{ position: 'fixed', top: '0 !important', left: '0 !important', width: '100% !important', zIndex: '1000 !important', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
-          <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            {!isMobile && <span>{userName}</span>}
-            <Button variant="outline" onClick={() => router.push('/settings')} style={{ cursor: 'pointer', padding: '8px' }}>
-              <Settings size={16} />
-            </Button>
-            <Button variant="outline" onClick={signOut} style={{ cursor: 'pointer' }}>
-              {'Sign Out'}
-            </Button>
-          </div>
-        </div>
+        <TopBar 
+          userName={userName}
+          isMobile={isMobile}
+          onSignOut={signOut}
+          showUserControls={true}
+        />
 
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '120px' }}>
           <Textarea 
