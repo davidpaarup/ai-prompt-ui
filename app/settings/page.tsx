@@ -123,7 +123,7 @@ export default function SettingsPage() {
   if (isCheckingAuth) {
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '1000', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             <Button variant="outline" onClick={() => router.back()} style={{ cursor: 'pointer', padding: '8px' }}>
               <ArrowLeft size={16} />
@@ -131,7 +131,7 @@ export default function SettingsPage() {
             <h1 style={{ margin: 0, fontSize: '24px' }}>Settings</h1>
           </div>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', paddingTop: '80px' }}>
           <div style={{
             width: '32px',
             height: '32px',
@@ -159,7 +159,7 @@ export default function SettingsPage() {
   return (
     <div>
       <Toaster position="bottom-right" />
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+      <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '1000', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           <Button variant="outline" onClick={() => router.back()} style={{ cursor: 'pointer', padding: '8px' }}>
             <ArrowLeft size={16} />
@@ -175,7 +175,7 @@ export default function SettingsPage() {
         </Button>
       </div>
 
-      <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto' }}>
+      <div style={{ padding: '40px', maxWidth: '800px', margin: '0 auto', paddingTop: '120px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '30px' }}>
           <Settings size={24} />
           <h2 style={{ margin: 0, fontSize: '20px' }}>Settings</h2>

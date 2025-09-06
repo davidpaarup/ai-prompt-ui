@@ -174,10 +174,10 @@ export default function Home() {
   if (isCheckingAuth) {
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '1000', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
           <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
         </div>
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px', paddingTop: '80px' }}>
           <div style={{
             width: '32px',
             height: '32px',
@@ -201,10 +201,10 @@ export default function Home() {
   if (!isAuthenticated) {
     return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ position: 'fixed', top: '0', left: '0', width: '100%', zIndex: '1000', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
           <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
         </div>
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '40px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px', marginTop: '120px' }}>
           <Button onClick={signIn} disabled={isLoading} style={{ cursor: isLoading ? 'not-allowed' : 'pointer' }}>
             {isLoading ? 'Signing in...' : 'Sign in with Microsoft'}
           </Button>
@@ -215,7 +215,7 @@ export default function Home() {
 
   return (
       <div>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
+        <div style={{ position: 'fixed !important', top: '0 !important', left: '0 !important', width: '100% !important', zIndex: '1000 !important', backgroundColor: 'rgba(255, 255, 255, 0.1)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0', boxSizing: 'border-box' }}>
           <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
             {!isMobile && <span>{userName}</span>}
@@ -228,7 +228,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '40px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', marginTop: '120px' }}>
           <Textarea 
             value={textareaValue} 
             onChange={(e) => setTextareaValue(e.target.value)}
