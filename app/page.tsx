@@ -218,7 +218,7 @@ export default function Home() {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '20px', borderBottom: '1px solid #e0e0e0' }}>
           <h1 style={{ margin: 0, fontSize: '24px' }}>AI prompt</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-            <span>{userName}</span>
+            {!isMobile && <span>{userName}</span>}
             <Button variant="outline" onClick={() => router.push('/settings')} style={{ cursor: 'pointer', padding: '8px' }}>
               <Settings size={16} />
             </Button>
