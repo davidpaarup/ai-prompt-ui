@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { createAuthClient } from "better-auth/react"
 import TopBar from "@/components/TopBar"
+import SignIn from "@/components/SignIn"
 
 export default function Home() {
   const authClient = createAuthClient()
@@ -14,8 +15,6 @@ export default function Home() {
   const [textareaValue, setTextareaValue] = useState('')
   const [apiResponse, setApiResponse] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [isMicrosoftLoading, setIsMicrosoftLoading] = useState(false)
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isCheckingAuth, setIsCheckingAuth] = useState(true)
   const [userName, setUserName] = useState('')
@@ -82,35 +81,6 @@ export default function Home() {
     }
   }
 
-  const signInWithMicrosoft = async () => {
-    setIsMicrosoftLoading(true)
-    try {
-
-      await authClient.signIn.social({
-        provider: "microsoft",
-        callbackURL: "/",
-      })
-
-    } catch (error) {
-      console.error('Error signing in:', error)
-      setIsMicrosoftLoading(false)
-    }
-  }
-
-  const signInWithGoogle = async () => {
-    setIsGoogleLoading(true)
-    try {
-
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/",
-      })
-
-    } catch (error) {
-      console.error('Error signing in:', error)
-      setIsGoogleLoading(false)
-    }
-  }
 
   const signOut = async () => {
     setIsLoading(true)
@@ -215,14 +185,7 @@ export default function Home() {
     return (
       <div>
         <TopBar />
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '15px', marginTop: '120px' }}>
-          <Button onClick={signInWithMicrosoft} disabled={isMicrosoftLoading || isGoogleLoading} variant="outline" style={{ cursor: (isMicrosoftLoading || isGoogleLoading) ? 'not-allowed' : 'pointer', minWidth: '200px' }}>
-            {isMicrosoftLoading ? 'Signing in...' : 'Sign in with Microsoft'}
-          </Button>
-          <Button onClick={signInWithGoogle} disabled={isMicrosoftLoading || isGoogleLoading} variant="outline" style={{ cursor: (isMicrosoftLoading || isGoogleLoading) ? 'not-allowed' : 'pointer', minWidth: '200px' }}>
-            {isGoogleLoading ? 'Signing in...' : 'Sign in with Google'}
-          </Button>
-        </div>
+        <SignIn />
       </div>
     )
   }
