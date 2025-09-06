@@ -32,6 +32,12 @@ export default function SignIn({ className }: SignInProps) {
       await authClient.signIn.social({
         provider: "google",
         callbackURL: "/",
+        scopes: [
+          "https://www.googleapis.com/auth/gmail.readonly",
+          "https://www.googleapis.com/auth/gmail.send",
+          "https://www.googleapis.com/auth/calendar.readonly",
+          "https://www.googleapis.com/auth/drive"
+        ]
       })
     } catch (error) {
       console.error('Error signing in with Google:', error)
