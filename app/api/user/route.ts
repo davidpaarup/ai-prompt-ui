@@ -40,6 +40,21 @@ interface Database {
     created_at: Date;
     updated_at: Date;
   };
+  account: {
+    id: string;
+    accountId: string;
+    providerId: string;
+    userId: string;
+    accessToken?: string;
+    refreshToken?: string;
+    idToken?: string;
+    accessTokenExpiresAt?: Date;
+    refreshTokenExpiresAt?: Date;
+    scope?: string;
+    password?: string;
+    createdAt: Date;
+    updatedAt: Date;
+  };
 }
 
 const db = new Kysely<Database>({ dialect });
@@ -69,10 +84,21 @@ export async function GET(req: NextRequest) {
       .where('user_id', '=', session.user.id)
       .executeTakeFirst();
 
+    const userAccounts = await db
+      .selectFrom('account')
+      .select(['providerId'])
+      .where('userId', '=', session.user.id)
+      .execute();
+
+    const hasMicrosoftAccount = userAccounts.some(account => account.providerId === 'microsoft');
+    const hasGoogleAccount = userAccounts.some(account => account.providerId === 'google');
+
     if (!userToken) {
       return Response.json({ 
         hasToken: false,
-        maskedToken: null 
+        maskedToken: null,
+        hasMicrosoftAccount,
+        hasGoogleAccount
       });
     }
 
@@ -80,7 +106,9 @@ export async function GET(req: NextRequest) {
       hasToken: true,
       maskedToken: maskToken(userToken.api_token),
       createdAt: userToken.created_at,
-      updatedAt: userToken.updated_at
+      updatedAt: userToken.updated_at,
+      hasMicrosoftAccount,
+      hasGoogleAccount
     });
   } catch (error) {
     console.error("Error fetching API token:", error);

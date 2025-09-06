@@ -48,6 +48,10 @@ export const auth = betterAuth({
         microsoft: {
             clientId: process.env.AUTH_MICROSOFT_ENTRA_ID_ID as string,
             clientSecret: process.env.AUTH_MICROSOFT_ENTRA_ID_SECRET as string
+        },
+        google: {
+            clientId: process.env.AUTH_GOOGLE_ID as string,
+            clientSecret: process.env.AUTH_GOOGLE_SECRET as string
         }
     },
 })
