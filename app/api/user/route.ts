@@ -91,14 +91,12 @@ export async function GET(req: NextRequest) {
       .execute();
 
     const hasMicrosoftAccount = userAccounts.some(account => account.providerId === 'microsoft');
-    const hasGoogleAccount = userAccounts.some(account => account.providerId === 'google');
 
     if (!userToken) {
       return Response.json({ 
         hasToken: false,
         maskedToken: null,
         hasMicrosoftAccount,
-        hasGoogleAccount
       });
     }
 
@@ -108,7 +106,6 @@ export async function GET(req: NextRequest) {
       createdAt: userToken.created_at,
       updatedAt: userToken.updated_at,
       hasMicrosoftAccount,
-      hasGoogleAccount
     });
   } catch (error) {
     console.error("Error fetching API token:", error);
