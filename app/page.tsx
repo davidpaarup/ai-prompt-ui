@@ -83,7 +83,6 @@ export default function Home() {
 
 
   const signOut = async () => {
-    setIsLoading(true)
     try {
       await authClient.signOut()
       setIsAuthenticated(false)
@@ -92,9 +91,7 @@ export default function Home() {
       setTextareaValue('')
     } catch (error) {
       console.error('Error signing out:', error)
-    } finally {
-      setIsLoading(false)
-    }
+    } 
   }
 
   const sendToAPI = async () => {
