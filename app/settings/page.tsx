@@ -79,7 +79,7 @@ export default function SettingsPage() {
 
   const saveApiToken = async () => {
     if (!apiToken.trim()) {
-      alert('Please enter an API token')
+      alert('Please enter an API key')
       return
     }
 
@@ -109,10 +109,10 @@ export default function SettingsPage() {
 
       setApiToken('')
       await fetchStoredToken()
-      toast.success('API token saved successfully!')
+      toast.success('API key saved successfully!')
     } catch (error) {
-      console.error('Error saving API token:', error)
-      toast.error('Error saving API token. Please try again.')
+      console.error('Error saving API key:', error)
+      toast.error('Error saving API key. Please try again.')
     } finally {
       setIsSaving(false)
     }
@@ -166,7 +166,7 @@ export default function SettingsPage() {
           </div>
 
           <div style={{ padding: '20px', border: '1px solid #e0e0e0', borderRadius: '8px' }}>
-            <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>OpenAI API token</h3>
+            <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>OpenAI API key</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               {hasStoredToken && (
                 <div style={{ padding: '12px', backgroundColor: '#f8f9fa', border: '1px solid #e9ecef', borderRadius: '4px' }}>

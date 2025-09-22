@@ -108,7 +108,7 @@ export async function GET(req: NextRequest) {
       hasMicrosoftAccount,
     });
   } catch (error) {
-    console.error("Error fetching API token:", error);
+    console.error("Error fetching API key:", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
@@ -127,10 +127,10 @@ export async function POST(req: NextRequest) {
     const { apiToken } = body;
 
     if (!apiToken || typeof apiToken !== 'string') {
-      return Response.json({ error: "API token is required" }, { status: 400 });
+      return Response.json({ error: "API key is required" }, { status: 400 });
     }
 
-    // Save or update the API token in the database
+    // Save or update the API key in the database
 
    const existing = await db
       .selectFrom('user_api_tokens')
@@ -163,10 +163,10 @@ export async function POST(req: NextRequest) {
 
     return Response.json({ 
       success: true,
-      message: "API token saved successfully" 
+      message: "API key saved successfully" 
     });
   } catch (error) {
-    console.error("Error saving API token:", error);
+    console.error("Error saving API key:", error);
     return Response.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -74,7 +74,7 @@ export default function Home() {
         setHasApiToken(data.hasToken)
       }
     } catch (error) {
-      console.error('Error checking API token status:', error)
+      console.error('Error checking API key status:', error)
       setHasApiToken(false)
     } finally {
       setIsCheckingToken(false)

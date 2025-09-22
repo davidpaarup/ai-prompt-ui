@@ -45,7 +45,7 @@ export default function SignIn({ className }: SignInProps) {
           fontWeight: '600',
           color: '#1f2937'
         }}>
-          Welcome back
+          Welcome
         </h2>
         <p style={{ 
           margin: 0, 
