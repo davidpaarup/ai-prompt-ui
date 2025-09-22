@@ -203,7 +203,7 @@ export default function Home() {
           <Textarea 
             value={textareaValue} 
             onChange={(e) => setTextareaValue(e.target.value)}
-            placeholder="Enter your prompt here..." 
+            placeholder="Ask me what I can do..." 
             onKeyDown={(e) => {
               if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault()
