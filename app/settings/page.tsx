@@ -176,7 +176,7 @@ export default function SettingsPage() {
               )}
               <Input
                 type="password"
-                placeholder={hasStoredToken ? "Enter new token" : "Enter your token"}
+                placeholder={hasStoredToken ? "Enter new key" : "Enter your key"}
                 value={apiToken}
                 onChange={(e) => setApiToken(e.target.value)}
                 disabled={isSaving}
