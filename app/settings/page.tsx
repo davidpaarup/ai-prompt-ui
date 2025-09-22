@@ -186,7 +186,7 @@ export default function SettingsPage() {
                 disabled={isSaving || !apiToken.trim()}
                 style={{ cursor: isSaving || !apiToken.trim() ? 'not-allowed' : 'pointer', alignSelf: 'flex-start' }}
               >
-                {isSaving ? 'Saving...' : (hasStoredToken ? 'Update token' : 'Save token')}
+                {isSaving ? 'Saving...' : (hasStoredToken ? 'Update key' : 'Save key')}
               </Button>
             </div>
           </div>
