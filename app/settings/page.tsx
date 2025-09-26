@@ -169,9 +169,11 @@ export default function SettingsPage() {
             <h3 style={{ margin: '0 0 15px 0', fontSize: '16px' }}>OpenAI API key</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
               {hasStoredToken && (
-                <div style={{ padding: '12px', backgroundColor: '#f8f9fa', border: '1px solid #e9ecef', borderRadius: '4px' }}>
-                  <p style={{ margin: '0 0 5px 0', fontSize: '14px', color: '#6c757d' }}>Current:</p>
-                  <p style={{ margin: 0, fontFamily: 'monospace', fontSize: '14px' }}>{maskedToken}</p>
+                <div>
+                  <p style={{ margin: '0 0 8px 0', fontSize: '14px', color: 'var(--muted-foreground)' }}>Current:</p>
+                  <div className="border-input flex h-10 w-full rounded-md border bg-transparent px-3 py-2 text-base shadow-xs md:text-sm" style={{ fontFamily: 'monospace', color: 'var(--foreground)' }}>
+                    {maskedToken}
+                  </div>
                 </div>
               )}
               <Input

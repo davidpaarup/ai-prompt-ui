@@ -39,18 +39,18 @@ export default function SignIn({ className }: SignInProps) {
       marginTop: '120px'
     }}>
       <div style={{ textAlign: 'center', marginBottom: '16px' }}>
-        <h2 style={{ 
-          margin: '0 0 8px 0', 
-          fontSize: '28px', 
+        <h2 style={{
+          margin: '0 0 8px 0',
+          fontSize: '28px',
           fontWeight: '600',
-          color: '#1f2937'
+          color: 'var(--foreground)'
         }}>
           Welcome
         </h2>
-        <p style={{ 
-          margin: 0, 
-          fontSize: '16px', 
-          color: '#6b7280'
+        <p style={{
+          margin: 0,
+          fontSize: '16px',
+          color: 'var(--muted-foreground)'
         }}>
           Sign in to your account to continue
         </p>
@@ -75,21 +75,21 @@ export default function SignIn({ className }: SignInProps) {
             alignItems: 'center',
             gap: '12px',
             justifyContent: 'center',
-            border: '1.5px solid #e5e7eb',
+            border: '1.5px solid var(--border)',
             borderRadius: '8px',
-            backgroundColor: '#ffffff',
+            backgroundColor: 'var(--background)',
             transition: 'all 0.2s ease'
           }}
           onMouseEnter={(e) => {
             if (!isAnyLoading) {
-              e.currentTarget.style.borderColor = '#d1d5db'
-              e.currentTarget.style.backgroundColor = '#f9fafb'
+              e.currentTarget.style.borderColor = 'var(--muted)'
+              e.currentTarget.style.backgroundColor = 'var(--accent)'
             }
           }}
           onMouseLeave={(e) => {
             if (!isAnyLoading) {
-              e.currentTarget.style.borderColor = '#e5e7eb'
-              e.currentTarget.style.backgroundColor = '#ffffff'
+              e.currentTarget.style.borderColor = 'var(--border)'
+              e.currentTarget.style.backgroundColor = 'var(--background)'
             }
           }}
         >
@@ -104,9 +104,9 @@ export default function SignIn({ className }: SignInProps) {
 
       </div>
 
-      <div style={{ 
-        fontSize: '13px', 
-        color: '#9ca3af', 
+      <div style={{
+        fontSize: '13px',
+        color: 'var(--muted-foreground)',
         textAlign: 'center',
         lineHeight: '1.4'
       }}>

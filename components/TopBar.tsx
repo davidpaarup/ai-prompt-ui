@@ -49,7 +49,7 @@ export default function TopBar({
       justifyContent: 'space-between', 
       alignItems: 'center', 
       padding: '20px', 
-      borderBottom: '1px solid #e0e0e0', 
+      borderBottom: '1px solid var(--border)', 
       boxSizing: 'border-box' 
     }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
@@ -60,25 +60,34 @@ export default function TopBar({
         )}
         <h1 style={{ margin: 0, fontSize: '24px' }}>{title}</h1>
       </div>
-      {showUserControls && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          {!isMobile && userName && <span>{userName}</span>}
-          <Button variant="outline" onClick={toggleTheme} style={{ cursor: 'pointer', padding: '8px' }}>
-            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
-          </Button>
-          <Button variant="outline" onClick={() => router.push('/settings')} style={{ cursor: 'pointer', padding: '8px' }}>
-            <Settings size={16} />
-          </Button>
-          <Button variant="outline" onClick={onSignOut} style={{ cursor: 'pointer' }}>
-            {'Sign Out'}
-          </Button>
-        </div>
-      )}
-      {!showUserControls && onSignOut && (
-        <Button variant="outline" onClick={onSignOut} style={{ cursor: 'pointer' }}>
-          Sign out
-        </Button>
-      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+        {showUserControls && (
+          <>
+            {!isMobile && userName && <span>{userName}</span>}
+            <Button variant="outline" onClick={toggleTheme} style={{ cursor: 'pointer', padding: '8px' }}>
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </Button>
+            <Button variant="outline" onClick={() => router.push('/settings')} style={{ cursor: 'pointer', padding: '8px' }}>
+              <Settings size={16} />
+            </Button>
+            <Button variant="outline" onClick={onSignOut} style={{ cursor: 'pointer' }}>
+              {'Sign Out'}
+            </Button>
+          </>
+        )}
+        {!showUserControls && (
+          <>
+            <Button variant="outline" onClick={toggleTheme} style={{ cursor: 'pointer', padding: '8px' }}>
+              {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+            </Button>
+            {onSignOut && (
+              <Button variant="outline" onClick={onSignOut} style={{ cursor: 'pointer' }}>
+                Sign out
+              </Button>
+            )}
+          </>
+        )}
+      </div>
     </div>
   )
 }
