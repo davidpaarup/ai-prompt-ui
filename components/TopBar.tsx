@@ -1,8 +1,9 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { Settings, ArrowLeft } from "lucide-react"
+import { Settings, ArrowLeft, Moon, Sun } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { useTheme } from "@/contexts/ThemeContext"
 
 interface TopBarProps {
   userName?: string
@@ -14,16 +15,17 @@ interface TopBarProps {
   onBack?: () => void
 }
 
-export default function TopBar({ 
-  userName, 
-  isMobile, 
-  onSignOut, 
-  showUserControls = false, 
+export default function TopBar({
+  userName,
+  isMobile,
+  onSignOut,
+  showUserControls = false,
   title = "AI prompt",
   showBackButton = false,
   onBack
 }: TopBarProps) {
   const router = useRouter()
+  const { theme, toggleTheme } = useTheme()
 
   const handleBack = () => {
     if (onBack) {
@@ -61,6 +63,9 @@ export default function TopBar({
       {showUserControls && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
           {!isMobile && userName && <span>{userName}</span>}
+          <Button variant="outline" onClick={toggleTheme} style={{ cursor: 'pointer', padding: '8px' }}>
+            {theme === 'dark' ? <Sun size={16} /> : <Moon size={16} />}
+          </Button>
           <Button variant="outline" onClick={() => router.push('/settings')} style={{ cursor: 'pointer', padding: '8px' }}>
             <Settings size={16} />
           </Button>
